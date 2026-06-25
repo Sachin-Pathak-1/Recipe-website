@@ -1,4 +1,5 @@
 import SlickSlider from "react-slick";
+import { useEffect, useState } from "react";
 import { useFetch } from "./useFetch";
 import { Clock, Loader } from "lucide-react";
 import { RecipeCardMini } from "./RecipeCardMini";
@@ -7,32 +8,42 @@ const Slider = SlickSlider.default || SlickSlider;
 
 export function TrendingRecipe({ title, fetchUrl }) {
     const { data, loading, error } = useFetch(fetchUrl);
+    const [slidesToShow, setSlidesToShow] = useState(1);
 
     const meals = data?.meals || [];
+
+    useEffect(() => {
+        const updateSlidesToShow = () => {
+            const width = window.innerWidth;
+
+            if (width < 1024) {
+                setSlidesToShow(1);
+            } else if (width < 1280) {
+                setSlidesToShow(2);
+            } else {
+                setSlidesToShow(4);
+            }
+        };
+
+        updateSlidesToShow();
+        window.addEventListener("resize", updateSlidesToShow);
+
+        return () => window.removeEventListener("resize", updateSlidesToShow);
+    }, []);
 
     const settings = {
         dots: false,
         arrows: false,
         infinite: true,
         speed: 600,
-        slidesToShow: 4,
+        slidesToShow,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: -10,
         cssEase: "linear",
         pauseOnHover: true,
         pauseOnFocus: false,
-        pauseOnDotsHover: false,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: { slidesToShow: 2 }
-            },
-            {
-                breakpoint: 768,
-                settings: { slidesToShow: 1 }
-            }
-        ]
+        pauseOnDotsHover: false
     };
 
     return (
@@ -51,7 +62,7 @@ export function TrendingRecipe({ title, fetchUrl }) {
 
             {!loading && !error && meals.length > 0 && (
                 <div className="w-full sm:w-11/12 mx-auto py-2.5">
-                    <Slider {...settings}>
+                    <Slider key={slidesToShow} {...settings}>
                         {meals.map((meal) => (
                             <RecipeCardMini key={meal.idMeal} meal={meal}/>
                         ))}
