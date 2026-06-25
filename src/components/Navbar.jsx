@@ -11,6 +11,7 @@ export function Navbar() {
     const handleSearch = (e) =>{
         e.preventDefault();
         if (!input.trim()) return;
+        e.currentTarget.querySelector("input")?.blur();
         setInput("");
         navigate(`search/${input.trim()}`);
     }

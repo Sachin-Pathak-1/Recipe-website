@@ -34,11 +34,11 @@ export function RecipeSlider({ title, fetchUrl }) {
     const settings = {
         dots: false,
         infinite: true,
-        speed: 600,
+        speed: 900,
         slidesToShow,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 3000,
         cssEase: "linear"
     };
 

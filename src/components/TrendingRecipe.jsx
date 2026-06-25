@@ -9,6 +9,7 @@ const Slider = SlickSlider.default || SlickSlider;
 export function TrendingRecipe({ title, fetchUrl }) {
     const { data, loading, error } = useFetch(fetchUrl);
     const [slidesToShow, setSlidesToShow] = useState(1);
+    const [autoplaySpeed, setAutoPlaySpeed] = useState(-10);
 
     const meals = data?.meals || [];
 
@@ -17,9 +18,11 @@ export function TrendingRecipe({ title, fetchUrl }) {
             const width = window.innerWidth;
 
             if (width < 1024) {
-                setSlidesToShow(1);
+                setSlidesToShow(1)
+                setAutoPlaySpeed(2000);
             } else if (width < 1280) {
-                setSlidesToShow(2);
+                setSlidesToShow(2)
+                setAutoPlaySpeed(1500);
             } else {
                 setSlidesToShow(4);
             }
@@ -39,7 +42,7 @@ export function TrendingRecipe({ title, fetchUrl }) {
         slidesToShow,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: -10,
+        autoplaySpeed,
         cssEase: "linear",
         pauseOnHover: true,
         pauseOnFocus: false,
