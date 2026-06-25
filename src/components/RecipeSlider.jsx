@@ -25,7 +25,7 @@ export function RecipeSlider({ title, fetchUrl }) {
                 settings: { slidesToShow: 2 }
             },
             {
-                breakpoint: 640,
+                breakpoint: 768,
                 settings: { slidesToShow: 1 }
             }
         ]
